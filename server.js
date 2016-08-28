@@ -61,11 +61,14 @@ io.on('connection', function (socket) {
      
 
 
+<<<<<<< HEAD
+=======
 });
 
 
 
 
+>>>>>>> ddb8db34d4211b69114494cc94ff7536e475c2b9
 server.listen(app.get('port'),function(){
     console.log('Server started on port:'+app.get('port'))
 });
