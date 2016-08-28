@@ -1,90 +1,7 @@
-const socket = io();
-var canvas;
-var context;
+var canvas = document.getElementById("canvas");
+var context = canvas.getContext("2d");
 var selectedShape=null;
 var color="";
-
-
-$(function () {
-
-
-    canvas = document.getElementById("canvas");
-    context = canvas.getContext("2d");
-    const username = localStorage.getItem('user');
-
-
-       // context.fillStyle = "#aabbcc";
-        //context.fillRect (100, 100, 400, 400);   
-    
-
-    $('#submitchat').click(function () {
-        console.log("Clicked on sent");
-        socket.emit('chat',
-            {
-                user: username,
-                msg: $('#chatmessage').val()
-            })
-    });
-
-    socket.on('chat', function (data) {
-        console.log("chat sent");
-        $('#chatbox').append(data.user
-            + ': ' + data.msg + '<br>')
-    })
-
-    socket.on('drawSquare',function(data){
-        console.log(data);
-        context.fillStyle = data.colour;
-        context.fillRect (data.positionx, data.positiony, 400, 400);   
-    })
-
-    socket.on('drawRect',function(data){
-        console.log(data);
-        context.fillStyle = data.colour;
-        context.fillRect (data.positionx, data.positiony, data.height_entry,data.width_entry);   
-    })
-
-    socket.on('drawCircle',function(data){
-
-        context.fillStyle=data.colour;
-        context.beginPath();
-        context.arc(data.positionx, data.positiony,data.radius_entry,0,Math.PI*2,true);
-        context.fill();
-    });
-
-    socket.on('drawTriangle',function(data){
-        context.fillStyle = data.colour;
-        context.beginPath();
-        context.moveTo(data.positionx,data.positiony);
-        context.lineTo(data.positionx+25,data.positiony+25);
-        context.lineTo(data.positionx-25,data.positiony+25);
-        context.fill()
-
-    });
-
-    //here
-   // get canvas element and create context
-   
-    $("#a_slider").slider({
-        orientation: "horizontal",
-        range: false,
-        min: 0,
-        max: 1,
-        value: 0,
-        step: .01,
-        animate: true,
-        slide: function (event, ui) {
-            $("#a_field").val(ui.value);
-            $("#a").text(ui.value);
-        }
-    });
-
-
-
-    //here
-
-
-});
 
 
 function eraser(event){
@@ -102,13 +19,9 @@ function drawSquare(event){
     posx = pos.x;
     posy = pos.y;
 
-    socket.emit('drawSquare',{
-        colour:color,
-        positionx:posx,
-        positiony:posy
-    });
-    //Done
-    console.log("Wtf");
+    context.fillStyle = color;
+    context.fillRect (posx, posy, 200, 200);
+   	console.log(color);
 }
 function reset(event){
 
@@ -123,13 +36,13 @@ function drawRect(event){
     var height=$('#height').val();
     var width=$('#width').val();
 
-    socket.emit('drawRect',{
-        colour:color,
-        positionx:posx,
-        positiony:posy,
-        height_entry:height,
-        width_entry:width
-    });
+    if(height ===""|| width==="")
+    {
+    	alert("Please enter the height and width");
+    }
+
+    context.fillStyle = color;
+    context.fillRect (posx, posy, height, width);
 }
 
 function Circle(event){
@@ -137,67 +50,37 @@ function Circle(event){
     posx = pos.x;
     posy = pos.y;
     var radius=$('#radius').val();
-    socket.emit('drawCircle',{
-        colour:color,
-        positionx:posx,
-        positiony:posy,
-        radius_entry:radius
-    });
+
+    context.fillStyle=color;
+	 context.beginPath();
+	 context.arc(posx,posy,radius,0,Math.PI*2,true);
+	 context.fill();
 }
 
 function triangle (event) {
 	var pos = getMousePos(canvas, event);
     posx = pos.x;
-    posy = pos.y;   
+    posy = pos.y;
 
-    socket.emit('drawTriangle',{
-        colour:color,
-        positionx:posx,
-        positiony:posy,
-    });
+    
+	context.fillStyle = color;
+	context.beginPath();
+    context.moveTo(posx,posy);
+    context.lineTo(posx+25,posy+25);
+    context.lineTo(posx-25,posy+25);
 
 
-	
+    context.fill();
 }
 
-/*function drawLine(event) {
-    
-    $('#canvas').mousedown(function (e) {
-        mousePressed = true;
-        Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
-    });
 
 
-    $('#canvas').mousemove(function (e) {
-        if (mousePressed) {
-            Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
-        }
-    });
-
-    $('#canvas').mouseup(function (e) {
-        mousePressed = false;
-    });
-        $('#canvas').mouseleave(function (e) {
-        mousePressed = false;
-    });
-   }
 
 
-   function Draw(x, y, isDown) {
-    if (isDown) {
-        context.beginPath();
-        context.strokeStyle = "red";
-        context.lineWidth = "3";
-        context.lineJoin = "round";
-        context.moveTo(lastX, lastY);
-        context.lineTo(x, y);
-        context.closePath();
-        context.stroke();
-    }
-    lastX = x; lastY = y;
-}*/
 
- 
+
+
+
 function draw(event){
       
 	console.log(selectedShape);
@@ -216,30 +99,28 @@ function draw(event){
 		triangle(event);
 
 	}
-    else if (selectedShape==6) {
-        
-       // drawLine();
-    }
-
 	else if (selectedShape==5) {
 
 		setInterval(function(){
 
-			
-        
-    $('#canvas').mousedown(function(event) {
-        canvas.addEventListener('mousemove',eraser);
-        
+			$(document).on('keydown', function (e) {
+        var key = e.keyCode;
+        if (key === 32){
+
+		 canvas.addEventListener('mousemove',eraser);
+        }
     });
 
-    $('#canvas').mouseup(function(event) {
-        
-        canvas.removeEventListener("mousemove", eraser);
+    $(document).on('keyup', function (e) {
+        var key = e.keyCode;
+        if (key === 32) {
+        	canvas.removeEventListener("mousemove", eraser);
             clearInterval();
-    });
-
+            
+        	}
+    	});
 			
-		},30);
+		},50)
 
 	}
 }
@@ -273,10 +154,6 @@ $("#eraser").click(function() {
 
 $("#reset").click(function() {
     reset();
-});
-
-$("#line").click(function() {
-    selectedShape=this.value;
 });
 
 
