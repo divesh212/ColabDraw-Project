@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0",
-    "rangeslider.js": "^2.2.1",
     "socket.io": "^1.4.8"
   }
 }
