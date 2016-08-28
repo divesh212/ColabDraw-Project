@@ -28,14 +28,5 @@ module.exports = {
             cb(result);
         });
         conn.end();
-    },
-    userexist: function (user,cb) {
-        const conn= createConnection();
-        conn.connect();
-        const queryString = "SELECT * FROM AllUsers WHERE usernames="+"'"+user.username+"'"+");";
-        conn.query(queryString,function (err, result2) {
-            cb(result);
-        });
-        conn.end();
     }
-};
+}
