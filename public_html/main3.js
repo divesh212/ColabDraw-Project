@@ -2,6 +2,7 @@
  * Created by divesh212 on 20/8/16.
  */
 console.log("main3 included");
+<<<<<<< HEAD
 const socket = io();
 
 $(function () {
@@ -23,3 +24,5 @@ $(function () {
             + ': ' + data.msg + '<br>')
     })
 });
+=======
+>>>>>>> ddb8db34d4211b69114494cc94ff7536e475c2b9
