@@ -4,13 +4,23 @@
 	<title>Canvas Try</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="jquery.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.2.1/rangeslider.css"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.2.1/rangeslider.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.2.1/rangeslider.min.js"></script>-->
+
 	<style type="text/css" media="screen">
 		#canvas{
-
+            background: white;
 			position: absolute;
 			border:2px solid red;
 			left: 230px;
 		}
+
+        body{
+            height: 670px;
+            background: linear-gradient(to bottom right,black, grey,black);
+        }
 
 		#color{
 			border-radius: 100px;
@@ -48,23 +58,29 @@
 			width:200px;
 			height: 50px;
         }
-        #main{
+
+        #chatbox{
+            border-radius: 15px;
+            margin-top: -442px;
+            margin-left: 65%;
             border: 2px solid blue;
             height: 500px;
-            width: 400px;
-            margin-left: 850px;
-            margin-top: -440px;
+            width: 440px;
+            background: white;
         }
-        #chatbox{
-
-        }
-        #element1{
+        .elements1{
             position: absolute;
-           margin-top: 510px;
+            margin-top: 80px;
+            margin-left: 64%;
         }
-        #chatmessage{
-            width: 320px;
+        #submitchat{
+            margin-left: 93%;
+        }
+
+        #chatmessage {
+            width: 360px;
             height: 20px;
+
         }
 
 	</style>
@@ -98,13 +114,12 @@
  <input type="number" class="ins" id="width" placeholder="width">--> Width of Rectangle</input><br>
  <input type="number" class="ins" id="radius" placeholder="radius of circle">-->Radius of the circle</input><br>
 </div>
-<div id="main">
- <div id="chatbox"></div>
- <div id="element1">
-     <input type="text" id="chatmessage">
-     <button type="button" id="submitchat"> Send </button>
- </div>
-</div>
+
+ <input type="text" id="chatmessage" class="elements1">
+ <button type="button" id="submitchat" class="elements1"> Send </button>
+ <div id="chatbox" style="overflow:scroll;"></div>
+
+ <!--<input type = "range" min="10" max="1000" step="10" value="300" data-orientation="vertical">-->
 <script type="" src="script.js"></script>
  <script src="main3.js"></script>
 </body>
